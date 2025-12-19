@@ -12,5 +12,5 @@ BrandGuard, markalar hakkındaki müşteri yorumlarını gerçek zamanlı analiz
 ## 🎯 Proje Amacı
 Sosyal medya ve e-ticaret platformlarındaki büyük veriyi işleyerek markalara anlık "Memnuniyet Raporu" sunmak.
 
-## 📸 Ekran Görüntüleri
-*(Buraya sunumdaki kanıt fotoğraflarını koyarsın)*
+
+
