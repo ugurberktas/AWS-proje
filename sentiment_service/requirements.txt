@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+textblob
+boto3
+pydantic
+
+

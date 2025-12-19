@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BrandGuard AI - Enterprise Marka İtibar Yönetimi Dashboard">
+    <title>BrandGuard AI - Enterprise Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ====================================================================
+           GLOBAL STYLES - Dark Mode Enterprise Theme
+           ==================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ====================================================================
+           DASHBOARD HEADER - Live Statistics
+           ==================================================================== */
+        .dashboard-header {
+            width: 100%;
+            max-width: 1400px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-bottom: 2px solid #38b2ac;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 10px;
+            min-width: 180px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #38b2ac;
+            display: block;
+            margin-bottom: 5px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        /* ====================================================================
+           MAIN CONTAINER - Review Form
+           ==================================================================== */
+        .container {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .blink {
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blinker 1.5s linear infinite;
+            box-shadow: 0 0 10px #ef4444;
+        }
+
+        @keyframes blinker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            color: #fff;
+            margin: 0 0 10px 0;
+            font-size: 32px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        h1 i {
+            color: #38b2ac;
+            margin-right: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 35px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* ====================================================================
+           FORM ELEMENTS
+           ==================================================================== */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #38b2ac;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(56, 178, 172, 0.2);
+            background: #1e293b;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        /* ====================================================================
+           BUTTON
+           ==================================================================== */
+        button {
+            background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 178, 172, 0.4);
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 178, 172, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ====================================================================
+           RESULT AREA
+           ==================================================================== */
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            display: none;
+            text-align: center;
+            animation: slideDown 0.4s ease-out;
+            border: 2px solid;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result.positive {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.2) 0%, rgba(56, 178, 172, 0.1) 100%);
+            border-color: #48bb78;
+            color: #48bb78;
+        }
+
+        .result.negative, .result.critical {
+            background: linear-gradient(135deg, rgba(245, 101, 101, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-color: #f56565;
+            color: #f56565;
+        }
+
+        .result.neutral {
+            background: linear-gradient(135deg, rgba(237, 137, 54, 0.2) 0%, rgba(251, 191, 36, 0.1) 100%);
+            border-color: #ed8936;
+            color: #ed8936;
+        }
+
+        .result h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .result p {
+            margin: 15px 0 0 0;
+            font-size: 15px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .result .score {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* ====================================================================
+           LOADER
+           ==================================================================== */
+        .loader {
+            border: 4px solid #1e293b;
+            border-top: 4px solid #38b2ac;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ====================================================================
+           RESPONSIVE DESIGN
+           ==================================================================== */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stat-box {
+                width: 100%;
+            }
+
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dashboard Header - Live Statistics -->
+    <div class="dashboard-header">
+        <div class="stat-box">
+            <span class="stat-number" id="totalData">14,258</span>
+            <span class="stat-label">İşlenen Yorum</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-number" style="color: #48bb78;" id="satisfactionRate">%76.4</span>
+            <span class="stat-label">Memnuniyet Oranı</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-number" style="color: #63b3ed;" id="apiLatency">24ms</span>
+            <span class="stat-label">API Gecikmesi</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="live-badge">
+            <div class="blink"></div>CANLI
+        </div>
+        
+        <h1><i class="fas fa-shield-alt"></i> BrandGuard AI</h1>
+        <p class="subtitle">Gerçek Zamanlı Duygu Analizi & Marka İtibar Yönetimi</p>
+        
+        <div class="input-group">
+            <label><i class="fas fa-tag"></i> Marka Adı</label>
+            <input type="text" id="brand" placeholder="Örn: TOGG, Getir, Trendyol, Amazon..." />
+        </div>
+        
+        <div class="input-group">
+            <label><i class="fas fa-comment-alt"></i> Müşteri Yorumu</label>
+            <textarea id="review" placeholder="Müşteri deneyimini buraya girin..."></textarea>
+        </div>
+        
+        <button id="analyzeBtn" onclick="analyze()">
+            <i class="fas fa-microchip"></i> ANALİZİ BAŞLAT
+        </button>
+        
+        <div class="loader" id="loader"></div>
+        
+        <div id="resultBox" class="result">
+            <h2 id="sentimentTitle"></h2>
+            <p id="sentimentDesc"></p>
+            <p class="score" id="sentimentScore"></p>
+        </div>
+    </div>
+
+    <script>
+        // ====================================================================
+        // LIVE DATA SIMULATION - Animasyonlu sayaçlar (Demo için)
+        // ====================================================================
+        
+        // İşlenen yorum sayacı (her 3 saniyede artar)
+        setInterval(() => {
+            const countElement = document.getElementById('totalData');
+            let current = parseInt(countElement.innerText.replace(/,/g, ''));
+            const increment = Math.floor(Math.random() * 3) + 1;
+            const target = current + increment;
+            
+            // Smooth animasyonlu artış
+            animateValue(countElement, current, target, 2000, (val) => {
+                countElement.innerText = Math.floor(val).toLocaleString('tr-TR');
+            });
+        }, 3000);
+
+        // Memnuniyet oranı simülasyonu (76.0 - 77.5 arası dalgalanır)
+        setInterval(() => {
+            const rateElement = document.getElementById('satisfactionRate');
+            const rate = (76.0 + Math.random() * 1.5).toFixed(1);
+            rateElement.textContent = `%${rate}`;
+        }, 4000);
+
+        // API gecikmesi simülasyonu (20-35ms arası)
+        setInterval(() => {
+            const latencyElement = document.getElementById('apiLatency');
+            const latency = Math.floor(20 + Math.random() * 15);
+            latencyElement.textContent = `${latency}ms`;
+        }, 2000);
+
+        // Animasyonlu değer artışı fonksiyonu
+        function animateValue(element, start, end, duration, callback) {
+            const startTime = performance.now();
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = start + (end - start) * progress;
+                callback(current);
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        // ====================================================================
+        // API INTEGRATION - Gerçek API çağrısı
+        // ====================================================================
+        
+        async function analyze() {
+            const brand = document.getElementById('brand').value.trim();
+            const text = document.getElementById('review').value.trim();
+            const loader = document.getElementById('loader');
+            const resultBox = document.getElementById('resultBox');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+
+            // Validasyon
+            if (!brand || !text) {
+                alert("Lütfen marka adı ve yorum metnini doldurun.");
+                return;
+            }
+
+            // UI durumunu güncelle
+            analyzeBtn.disabled = true;
+            loader.style.display = "block";
+            resultBox.style.display = "none";
+
+            try {
+                // Gerçek API isteği - Ingestion Service'e POST
+                const response = await fetch('http://localhost:8000/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        brand: brand,
+                        text: text
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult(data.sentiment, data.score, data.timestamp);
+                } else {
+                    // API hatası durumunda demo moduna geç
+                    console.warn("API returned error, switching to demo mode");
+                    simulateResult(text);
+                }
+            } catch (error) {
+                // Bağlantı hatası durumunda demo moduna geç
+                console.warn("Connection error, switching to demo mode:", error);
+                simulateResult(text);
+            } finally {
+                analyzeBtn.disabled = false;
+            }
+        }
+
+        // ====================================================================
+        // DEMO MODE - API erişilemediğinde basit analiz
+        // ====================================================================
+        
+        function simulateResult(text) {
+            setTimeout(() => {
+                let result = "NEUTRAL";
+                let score = 0.0;
+                const lower = text.toLowerCase();
+                
+                // Basit keyword-based sentiment (demo için)
+                const positiveKeywords = ["iyi", "harika", "süper", "teşekkür", "mükemmel", "beğendim", "tavsiye"];
+                const negativeKeywords = ["kötü", "rezalet", "yavaş", "sorun", "berbat", "hayal kırıklığı", "şikayet"];
+                
+                const positiveCount = positiveKeywords.filter(kw => lower.includes(kw)).length;
+                const negativeCount = negativeKeywords.filter(kw => lower.includes(kw)).length;
+                
+                if (positiveCount > negativeCount) {
+                    result = "POSITIVE";
+                    score = 0.3 + Math.random() * 0.5;
+                } else if (negativeCount > positiveCount) {
+                    result = "CRITICAL";
+                    score = -0.3 - Math.random() * 0.5;
+                } else {
+                    result = "NEUTRAL";
+                    score = (Math.random() - 0.5) * 0.2;
+                }
+                
+                showResult(result, score, new Date().toISOString());
+            }, 1200);
+        }
+
+        // ====================================================================
+        // RESULT DISPLAY - Sonuçları ekranda göster
+        // ====================================================================
+        
+        function showResult(sentiment, score, timestamp) {
+            const loader = document.getElementById('loader');
+            const resultBox = document.getElementById('resultBox');
+            const title = document.getElementById('sentimentTitle');
+            const desc = document.getElementById('sentimentDesc');
+            const scoreElement = document.getElementById('sentimentScore');
+
+            loader.style.display = "none";
+            resultBox.style.display = "block";
+            
+            // Sentiment'e göre CSS class'ı belirle
+            const sentimentClass = sentiment.toLowerCase();
+            resultBox.className = `result ${sentimentClass}`;
+
+            // Sonuç mesajlarını belirle
+            const messages = {
+                "POSITIVE": {
+                    icon: '<i class="fas fa-smile"></i>',
+                    title: "OLUMLU",
+                    desc: "Yüksek müşteri memnuniyeti tespit edildi. Marka değeri artışta.",
+                },
+                "CRITICAL": {
+                    icon: '<i class="fas fa-exclamation-triangle"></i>',
+                    title: "KRİTİK",
+                    desc: "Kritik şikayet tespit edildi. Acil kriz yönetimi öneriliyor.",
+                },
+                "NEGATIVE": {
+                    icon: '<i class="fas fa-frown"></i>',
+                    title: "OLUMSUZ",
+                    desc: "Olumsuz geri bildirim tespit edildi. İyileştirme gerekli.",
+                },
+                "NEUTRAL": {
+                    icon: '<i class="fas fa-meh"></i>',
+                    title: "NÖTR",
+                    desc: "Duygu durumu stabil. Herhangi bir risk tespit edilmedi.",
+                }
+            };
+
+            const msg = messages[sentiment] || messages["NEUTRAL"];
+            title.innerHTML = `${msg.icon} ${msg.title}`;
+            desc.textContent = msg.desc;
+            scoreElement.textContent = `Polarity Skoru: ${score.toFixed(3)}`;
+        }
+
+        // Enter tuşu ile form gönderimi
+        document.getElementById('review').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                analyze();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+# ============================================================================
+# BrandGuard AI - Docker Compose Configuration
+# ============================================================================
+# Mikroservis mimarisi için container orchestration dosyası
+# 
+# Servisler:
+#   - ingestion_service: API Gateway (Port 8000)
+#   - sentiment_service: Sentiment Analysis Engine (Port 8001)
+#
+# Network: brandguard-net (servisler birbirlerini isimleriyle bulur)
+# ============================================================================
+
+version: "3.9"
+
+services:
+  # ========================================================================
+  # Ingestion Service - API Gateway
+  # ========================================================================
+  ingestion_service:
+    build:
+      context: ./ingestion_service
+      dockerfile: Dockerfile
+    container_name: brandguard-ingestion
+    ports:
+      - "8000:8000"
+    environment:
+      # AWS credentials (opsiyonel - sentiment service için)
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-eu-central-1}
+    depends_on:
+      - sentiment_service
+    networks:
+      - brandguard-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ========================================================================
+  # Sentiment Service - NLP Analysis Engine
+  # ========================================================================
+  sentiment_service:
+    build:
+      context: ./sentiment_service
+      dockerfile: Dockerfile
+    container_name: brandguard-sentiment
+    ports:
+      - "8001:8001"
+    environment:
+      # AWS DynamoDB credentials
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-eu-central-1}
+    networks:
+      - brandguard-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# ============================================================================
+# Network Configuration
+# ============================================================================
+networks:
+  brandguard-net:
+    driver: bridge
+    name: brandguard-network
